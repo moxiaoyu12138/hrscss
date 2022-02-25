@@ -1,3 +1,4 @@
+
 // import router from './router'
 // import store from './store'
 // import { Message } from 'element-ui'
@@ -62,3 +63,42 @@
 //   // finish progress bar
 //   NProgress.done()
 // })
+
+// 权限拦截路由跳转
+import router from './router'
+import store from '@/store'
+import nprogress from 'nprogress' // 引入一份进度条插件
+import 'nprogress/nprogress.css' // 引入进度条样式
+// 不需要导出 只需要将代码执行即可
+// 前置守卫
+// next是前置守卫必须执行的钩子，必须执行若不执行，页面就死了
+// next() 放过
+// next(false) 跳转终止
+// next(地址) 跳转到某个地址
+const whiteList = ['/login', '/404'] // 设置白名单
+router.beforeEach(async(to, from, next) => {
+  nprogress.start()
+  if (store.getters.token) {
+    // 如果有token
+    if (to.path === '/login') {
+      next('/')
+    } else {
+      next()
+    }
+  } else {
+    //   如果没有token
+    if (whiteList.indexOf(to.path) > -1) {
+    //   在白名单
+      next()
+    } else {
+      // 不在白名单，跳转登录
+      next('/login')
+    }
+  }
+  nprogress.done()
+})
+
+// 后置守卫
+router.afterEach(() => {
+  nprogress.done()
+})
