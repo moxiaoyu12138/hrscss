@@ -14,10 +14,8 @@ const mutations = {
 }
 const actions = {
   async login(context, data) {
-    const result = await this.login(data)
-    if (result.data.success) {
-      context.commit('setToken', result.data.data)
-    }
+    const result = await this.login(data) // 拿到token
+    context.commit('setToken', result) // 设置token
   }
 }
 export default {
