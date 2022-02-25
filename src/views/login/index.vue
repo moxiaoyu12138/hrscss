@@ -38,6 +38,7 @@
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
+        <!-- native监听组件的原生事件， -->
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
